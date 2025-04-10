@@ -47,8 +47,10 @@ async function initSciChart(rootElement: string | HTMLDivElement) {
 
     get formatLabel() {
       return (dataValue: number) => {
+        if (dataValue === 5) return "";
         if (dataValue > 30 && dataValue < 45) return "";
         if (dataValue > 80 && dataValue < 105) return "";
+        // if (dataValue === 105) return "∞"
         return dataValue.toFixed(0);
       };
     }
@@ -144,6 +146,7 @@ async function initSciChart(rootElement: string | HTMLDivElement) {
     },
   };
 
+
   const totalData = populationData.yValue.africa.male.map((d, i) => {
     const yValue =
       d +
@@ -157,6 +160,8 @@ async function initSciChart(rootElement: string | HTMLDivElement) {
     };
   });
 
+  // console.log({ totalData });
+
   const eightyPlus = totalData.reduce((acc, cur) => {
     return cur.xValue >= 80 ? cur.yValue + acc : acc;
   }, 0) as number;
@@ -165,7 +170,11 @@ async function initSciChart(rootElement: string | HTMLDivElement) {
     return cur.xValue >= 30 && cur.xValue < 45 ? cur.yValue + acc : acc;
   }, 0) as number;
 
-  const unwanted = [35, 40, 85, 90, 95, 100];
+  const zeroToTen = totalData.reduce((acc, cur) => {
+    return cur.xValue < 10 ? cur.yValue + acc : acc;
+  }, 0) as number;
+
+  const unwanted = [5, 35, 40, 85, 90, 95, 100];
 
   const xValues = totalData
     .map((d) => d.xValue)
@@ -173,7 +182,7 @@ async function initSciChart(rootElement: string | HTMLDivElement) {
       return !unwanted.includes(d);
     });
 
-  const yValues = totalData.map(() => 0).slice(0, 15);
+  const yValues = totalData.map(() => 0).slice(0, 14);
 
   const x1Values = totalData
     .map((d) => {
@@ -187,7 +196,8 @@ async function initSciChart(rootElement: string | HTMLDivElement) {
     if (
       !unwanted.includes(cur.xValue) &&
       cur.xValue !== 80 &&
-      cur.xValue !== 30
+      cur.xValue !== 30 &&
+      cur.xValue !== 0
     ) {
       acc.push(cur.yValue);
     }
@@ -196,10 +206,14 @@ async function initSciChart(rootElement: string | HTMLDivElement) {
       acc.push(aboveThirtyAndLessThanfourtyFive);
     } else if (cur.xValue === 100) {
       acc.push(eightyPlus);
+    } else if (cur.xValue === 0) {
+      acc.push(zeroToTen);
     }
 
     return acc;
   }, []);
+
+  // console.log({ xValues, yValues, x1Values, y1Values });
 
   // const metadata = totalData
   //   .map((d) => ({
@@ -259,7 +273,9 @@ async function initSciChart(rootElement: string | HTMLDivElement) {
 
   sciChartSurface.renderableSeries.add(rectangleSeries);
 
-  sciChartSurface.title = ["Europe and Africa Population Distribution by Age Range"];
+  sciChartSurface.title = [
+    "Europe and Africa Population Distribution by Age Range",
+  ];
 
   sciChartSurface.titleStyle = {
     color: "#ffffff",
