@@ -50,7 +50,7 @@ async function initSciChart(rootElement: string | HTMLDivElement) {
         if (dataValue === 5) return "";
         if (dataValue > 30 && dataValue < 45) return "";
         if (dataValue > 80 && dataValue < 105) return "";
-        // if (dataValue === 105) return "∞"
+        if (dataValue === 105) return "80+";
         return dataValue.toFixed(0);
       };
     }
@@ -145,7 +145,6 @@ async function initSciChart(rootElement: string | HTMLDivElement) {
       },
     },
   };
-
 
   const totalData = populationData.yValue.africa.male.map((d, i) => {
     const yValue =
