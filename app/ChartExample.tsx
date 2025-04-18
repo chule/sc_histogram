@@ -8,7 +8,7 @@ import {
   EColumnMode,
   EColumnYMode,
   EDataPointWidthMode,
-  EResamplingMode,
+  // EResamplingMode,
   XyxyDataSeries,
   // EColumnDataLabelPosition,
   // EHorizontalTextPosition,
@@ -30,7 +30,7 @@ import {
 // An example of WASM dependencies URLs configuration to fetch from origin server:
 SciChartSurface.configure({
   wasmUrl: "scichart2d.wasm",
-  dataUrl: "scichart2d.data",
+  // dataUrl: "scichart2d.data",
 });
 
 async function initSciChart(rootElement: string | HTMLDivElement) {
@@ -212,25 +212,6 @@ async function initSciChart(rootElement: string | HTMLDivElement) {
 
     return acc;
   }, []);
-
-  // console.log({ xValues, yValues, x1Values, y1Values });
-
-  // const metadata = totalData
-  //   .map((d) => ({
-  //     label: d.yValue.toString(),
-  //     isSelected: false,
-  //   }))
-  //   .slice(0, 15);
-
-  // const xValues = data.map((d) => d.x);
-  // const yValues = data.map((d) => d.y);
-  // const x1Values = data.map((d) => d.x1);
-  // const y1Values = data.map((d) => d.y1);
-
-  // const metadata = data.map((d) => ({
-  //   label: d.y1.toString(),
-  //   isSelected: false,
-  // }));
 
   class StickFigureTextureOptions implements ICustomTextureOptions {
     options: { stroke: string };
